@@ -17,12 +17,11 @@ app.use(
   }),
 );
 
-// Catalogue complet : aucune donnée fournie par le client n'entre dans la requête.
-// CodeQL ne signale rien ici, et c'est normal — il n'y a pas de source.
-app.get("/produits", async (_req, res) => {
-  const { rows } = await pool.query(
-    "SELECT nom, prix FROM produit ORDER BY nom",
-  );
+// Filtre par catégorie demandé par le métier.
+app.get("/produits", async (req, res) => {
+  const sql = `SELECT nom, prix FROM produit
+               WHERE categorie = '${req.query.categorie}'`;
+  const { rows } = await pool.query(sql);
   res.json(rows);
 });
 
