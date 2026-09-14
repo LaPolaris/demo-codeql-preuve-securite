@@ -18,10 +18,13 @@ app.use(
 );
 
 // Filtre par catégorie demandé par le métier.
+// La catégorie est passée en paramètre lié : PostgreSQL la traite comme une
+// valeur, jamais comme du SQL.
 app.get("/produits", async (req, res) => {
-  const sql = `SELECT nom, prix FROM produit
-               WHERE categorie = '${req.query.categorie}'`;
-  const { rows } = await pool.query(sql);
+  const { rows } = await pool.query(
+    "SELECT nom, prix FROM produit WHERE categorie = $1",
+    [req.query.categorie],
+  );
   res.json(rows);
 });
 
