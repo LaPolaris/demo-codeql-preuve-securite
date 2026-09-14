@@ -1,0 +1,53 @@
+name: CodeQL
+
+# L'analyse tourne sur trois déclencheurs, et ce n'est pas un détail :
+#  - push sur main      : établit la ligne de base (l'état sain du dépôt) ;
+#  - pull_request       : c'est CE déclencheur qui produit l'annotation visible
+#                         publiquement dans l'onglet « Files changed » de la PR ;
+#  - schedule           : rejoue l'analyse chaque semaine, car les requêtes CodeQL
+#                         évoluent : du code inchangé peut déclencher une alerte
+#                         qui n'existait pas au moment du commit.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: ["**"]
+  schedule:
+    - cron: "27 3 * * 1"
+
+jobs:
+  analyse:
+    name: Analyse CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      # Indispensable pour publier les résultats : sans elle, l'analyse tourne
+      # mais aucune alerte n'est remontée.
+      security-events: write
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v7
+
+      - name: Initialisation de CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          # Suite « security-extended » plutôt que la suite par défaut :
+          # elle ajoute des requêtes de précision « medium » que la configuration
+          # par défaut écarte. Voir la section « Mettre l'analyse en route ».
+          queries: security-extended
+
+      - name: Analyse
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
