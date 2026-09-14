@@ -42,6 +42,20 @@ changer la structure de la requête. C'est aussi pourquoi désinfecter « à la 
 avec un échappement maison ne suffit généralement pas à éteindre l'alerte : le
 moteur ne reconnaît pas la fonction comme un assainisseur.
 
+## La limitation de débit, trouvée en chemin
+
+Ce dossier contient un `rateLimit` qui n'était pas prévu. Il vient d'une alerte
+`js/missing-rate-limiting` remontée par CodeQL dès la première analyse, sur du
+code écrit ligne par ligne pour ne contenir qu'une seule faille — l'injection
+SQL.
+
+L'alerte est fondée : une route qui interroge la base sans plafond de requêtes
+se prête à une saturation du service. Elle vient de la suite `security-extended`,
+que la configuration par défaut n'active pas.
+
+C'est la meilleure illustration possible de ce que fait un moteur d'analyse :
+il ne cherche pas ce que vous avez décidé de lui montrer.
+
 ## Faire tourner la démonstration
 
 ```bash
