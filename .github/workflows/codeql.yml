@@ -32,10 +32,21 @@ jobs:
         include:
           - language: javascript-typescript
             build-mode: none
+          # C# est compilé : CodeQL a besoin d'observer une compilation réelle
+          # pour résoudre les types, donc les appels d'Entity Framework Core.
+          # « autobuild » lance « dotnet build » et suffit ici.
+          - language: csharp
+            build-mode: autobuild
 
     steps:
       - name: Récupération du code
         uses: actions/checkout@v7
+
+      - name: Installation du SDK .NET
+        if: matrix.language == 'csharp'
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "8.0.x"
 
       - name: Initialisation de CodeQL
         uses: github/codeql-action/init@v4
