@@ -27,9 +27,14 @@ D'où l'organisation retenue :
 
 | # | Exemple | Vulnérabilité | Règle CodeQL | PR qui déclenche l'alerte | PR qui corrige |
 |---|---------|---------------|--------------|---------------------------|----------------|
-| 1 | [Express + PostgreSQL](01-injection-sql-node/) | Injection SQL | `js/sql-injection` | _(à compléter)_ | _(à compléter)_ |
-| 2 | .NET 8 + EF Core | Injection SQL | `cs/sql-injection` | _(à venir)_ | _(à venir)_ |
-| 3 | GitHub Actions | Injection de code | `actions/code-injection/critical` | _(à venir)_ | _(à venir)_ |
+| 1 | [Express + PostgreSQL](01-injection-sql-node/) | Injection SQL | `js/sql-injection` | [#1](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/1) | [#2](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/2) |
+| 2 | [.NET 8 + EF Core](02-injection-sql-dotnet/) | Injection SQL | `cs/sql-injection` | [#5](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/5) | [#6](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/6) |
+| 3 | [GitHub Actions](03-injection-actions/) | Injection de code | `actions/code-injection/critical` | [#9](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/9) | [#10](https://github.com/LaPolaris/demo-codeql-preuve-securite/pull/10) |
+
+Ces six pull requests restent ouvertes en permanence. Celles qui portent une
+alerte ne doivent jamais être fusionnées — en particulier la #9, dont le workflow
+deviendrait actif sur `main`. Les pull requests fermées (#3, #4, #7, #8, #11) sont
+l'historique de construction du dépôt.
 
 ## Vérifier par vous-même
 
