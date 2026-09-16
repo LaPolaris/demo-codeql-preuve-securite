@@ -10,11 +10,12 @@ builder.Services.AddDbContext<CatalogueContext>(options =>
 
 var app = builder.Build();
 
-// Filtre par catégorie demandé par le métier.
+// La chaîne interpolée n'en est pas une : FromSql reçoit une FormattableString
+// et place un paramètre de base de données à chaque accolade.
 app.MapGet("/produits", async (string categorie, CatalogueContext db) =>
 {
     var produits = await db.Produits
-        .FromSqlRaw("SELECT * FROM Produit WHERE Categorie = '" + categorie + "'")
+        .FromSql($"SELECT * FROM Produit WHERE Categorie = {categorie}")
         .ToListAsync();
 
     return Results.Ok(produits);
