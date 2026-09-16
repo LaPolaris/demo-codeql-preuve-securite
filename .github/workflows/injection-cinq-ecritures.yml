@@ -1,0 +1,41 @@
+# Cinq écritures d'une même injection de code.
+#
+# Les cinq sont exploitables : « $(commande) » s'exécute dans chacune, y
+# compris entre guillemets doubles. Deux seulement sont signalées par la
+# requête actions/code-injection — les annotations de la pull request le
+# montrent.
+#
+# Ce fichier n'est jamais exécuté : un déclencheur « issue_comment » n'est
+# actif que depuis la branche par défaut.
+name: Cinq ecritures d'une meme injection
+
+on: issue_comment
+
+jobs:
+  cinq-ecritures:
+    runs-on: ubuntu-latest
+    steps:
+      # SIGNALÉE — bloc multiligne, apostrophes simples.
+      # C'est l'écriture de l'exemple publié dans la documentation GitHub.
+      - name: 1 - multiligne, apostrophes
+        run: |
+          echo '${{ github.event.comment.body }}'
+
+      # SIGNALÉE — même écriture, autre entrée non fiable.
+      - name: 2 - multiligne, apostrophes, autre expression
+        run: |
+          echo '${{ github.event.issue.title }}'
+
+      # NON SIGNALÉE — une seule ligne, guillemets doubles.
+      # C'est l'écriture la plus courante, et celle de l'article.
+      - name: 3 - ligne unique, guillemets
+        run: echo "Nouveau ticket : ${{ github.event.comment.body }}"
+
+      # NON SIGNALÉE — multiligne comme 1 et 2, mais guillemets doubles.
+      - name: 4 - multiligne, guillemets
+        run: |
+          echo "Nouveau ticket : ${{ github.event.issue.title }}"
+
+      # NON SIGNALÉE — apostrophes comme 1 et 2, mais sur une seule ligne.
+      - name: 5 - ligne unique, apostrophes
+        run: echo '${{ github.event.issue.title }}'
