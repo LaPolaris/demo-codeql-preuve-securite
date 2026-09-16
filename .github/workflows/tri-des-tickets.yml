@@ -1,0 +1,13 @@
+name: Tri des tickets
+
+# Chaque nouveau ticket est journalisé, pour suivre le volume d'arrivée.
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  tri:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '${{ github.event.issue.title }}'
