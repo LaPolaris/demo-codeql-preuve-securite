@@ -37,6 +37,11 @@ jobs:
           # « autobuild » lance « dotnet build » et suffit ici.
           - language: csharp
             build-mode: autobuild
+          # Les fichiers de .github/workflows sont du code comme le reste, et
+          # tournent avec les secrets du dépôt à portée. CodeQL les analyse
+          # depuis que « actions » est un langage à part entière.
+          - language: actions
+            build-mode: none
 
     steps:
       - name: Récupération du code
