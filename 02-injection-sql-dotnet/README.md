@@ -28,12 +28,12 @@ l'avertissement est là, il ne suffit pas.
 - **Puits** : `FromSqlRaw`, que la bibliothèque CodeQL pour C# modélise comme une
   exécution de requête.
 
-C'est le point à vérifier sur cet exemple, et il n'est pas acquis d'avance : la
-modélisation des sources est bien établie pour les contrôleurs MVC classiques,
-elle l'est moins pour les paramètres de délégué des API minimales, plus récentes.
-Si l'alerte ne se déclenche pas, ce n'est pas le code qui est en cause, c'est la
-couverture du moteur — et l'information vaut d'être connue avant de promettre
-une analyse à un client.
+Le point méritait vérification : la modélisation des sources est documentée de
+longue date pour les contrôleurs MVC, beaucoup moins pour les paramètres de
+délégué des API minimales, plus récentes. Le résultat est sans ambiguïté — le
+message de l'alerte nomme lui-même l'origine de la donnée, « this ASP.NET Core
+routing endpoint ». Un argument de délégué, sans attribut ni contrôleur, est
+bien reconnu comme entrée utilisateur.
 
 ## La différence avec l'exemple 1 : l'étape de compilation
 

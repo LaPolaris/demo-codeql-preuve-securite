@@ -12,11 +12,19 @@ ouvre rarement, et qui tourne pourtant avec les secrets du dépôt à portée.
 
 ## Les états du code
 
-| Branche | État du workflow | Résultat attendu |
-|---------|------------------|------------------|
+| Branche | État du workflow | Résultat |
+|---------|------------------|----------|
 | `main` | Pas de workflow de tri. | Aucune alerte |
-| `feat/tri-des-tickets` | Le titre du ticket est écrit directement dans le `run`. | `actions/code-injection/critical` |
+| `feat/tri-des-tickets` | Le titre du ticket est écrit directement dans le `run`. | `actions/code-injection/critical`, gravité 9 |
 | `fix/variable-environnement` | Le titre passe par une variable d'environnement, lue avec la syntaxe du shell. | Aucune alerte |
+
+La branche vulnérable porte un second fichier, `injection-cinq-ecritures.yml`,
+qui relève cinq façons d'écrire la même injection. Les cinq sont exploitables,
+deux seulement sont signalées : il faut un bloc `run` multiligne **et** des
+apostrophes simples. Chaque étape annonce son résultat en commentaire.
+
+Relevé du 16 septembre 2026. Cinq cas ne font pas une règle, et une version
+ultérieure du moteur peut très bien les signaler tous.
 
 ## Ce que CodeQL établit
 
