@@ -9,5 +9,10 @@ jobs:
   tri:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo '${{ github.event.issue.title }}'
+      # Le titre transite par une variable d'environnement et n'est lu que par
+      # le shell. Il n'apparaît jamais dans le texte du script : GitHub ne le
+      # substitue plus, il le transmet.
+      - env:
+          TITRE: ${{ github.event.issue.title }}
+        run: |
+          echo "Nouveau ticket : $TITRE"
