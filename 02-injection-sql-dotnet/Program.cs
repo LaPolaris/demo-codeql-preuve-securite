@@ -10,9 +10,14 @@ builder.Services.AddDbContext<CatalogueContext>(options =>
 
 var app = builder.Build();
 
-// Catalogue complet : aucune donnée fournie par le client n'entre dans la
-// requête, et LINQ paramètre de toute façon ce qu'il traduit en SQL.
-app.MapGet("/produits", async (CatalogueContext db) =>
-    Results.Ok(await db.Produits.OrderBy(p => p.Nom).ToListAsync()));
+// Filtre par catégorie demandé par le métier.
+app.MapGet("/produits", async (string categorie, CatalogueContext db) =>
+{
+    var produits = await db.Produits
+        .FromSqlRaw("SELECT * FROM Produit WHERE Categorie = '" + categorie + "'")
+        .ToListAsync();
+
+    return Results.Ok(produits);
+});
 
 app.Run();
